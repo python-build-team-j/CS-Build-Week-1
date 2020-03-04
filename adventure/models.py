@@ -72,3 +72,10 @@ def create_user_player(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_player(sender, instance, **kwargs):
     instance.player.save()
+
+
+# CurrentUser subclass that has information about the currently logged in player
+
+# class CurrentUser(Player):  # inherit from Player model
+#     # cascade - related records in other tables get deleted automatically
+#     currentUser = models.ForeignKey(User, on_delete=models.CASCADE)
