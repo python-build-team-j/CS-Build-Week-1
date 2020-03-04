@@ -5,6 +5,11 @@
 # procedural generation algorithm and use print_rooms()
 # to see the world.
 
+from random import seed
+from random import randint
+
+seed(1)
+
 
 class Room:
     def __init__(self, id, name, description, x, y):
@@ -53,46 +58,92 @@ class World:
         for i in range( len(self.grid) ):
             self.grid[i] = [None] * size_x
 
-        # Start from lower-left corner (0,0)
-        x = -1 # (this will become 0 on the first step)
-        y = 0
-        room_count = 0
 
-        # Start generating rooms to the east
-        direction = 1  # 1: east, -1: west
+        # OUR ROOM GENERATOR
+        x = size_x // 2
+        y = size_y // 2
 
+        room = Room(room_count, "A Generic Room", "This is a generic room.", x, y)
+        room_count = 1
+        previous_room = room
 
-        # While there are rooms to be created...
-        previous_room = None
         while room_count < num_rooms:
+            dir = randint(1, 4)
 
-            # Calculate the direction of the room to be created
-            if direction > 0 and x < size_x - 1:
-                room_direction = "e"
-                x += 1
-            elif direction < 0 and x > 0:
-                room_direction = "w"
-                x -= 1
-            else:
-                # If we hit a wall, turn north and reverse direction
+ 
+            if dir == 1 and room.n_to is None and !self.grid[y+1][x]:
+                room_count += 1
                 room_direction = "n"
                 y += 1
-                direction *= -1
-
-            # Create a room in the given direction
-            room = Room(room_count, "A Generic Room", "This is a generic room.", x, y)
-            # Note that in Django, you'll need to save the room after you create it
-
-            # Save the room in the World grid
-            self.grid[y][x] = room
-
-            # Connect the new room to the previous room
-            if previous_room is not None:
+                room = Room(room_count, "A Generic Room", "This is a generic room.", x, y)
+                self.grid[y][x] = room
                 previous_room.connect_rooms(room, room_direction)
+                previous_room = room
+            elif dir == 2 and room.e_to is None and !self.grid[y][x+1]:
+                room_count += 1
+                room_direction = "e"
+                x += 1
+                room = Room(room_count, "A Generic Room", "This is a generic room.", x, y)
+                self.grid[y][x] = room
+                previous_room.connect_rooms(room, room_direction)
+                previous_room = room
+            elif dir == 3 and room.s_to is None and !self.grid[y-1][x]:
+                room_count += 1
+                room_direction = "s"
+                y -= 1
+                room = Room(room_count, "A Generic Room", "This is a generic room.", x, y)
+                self.grid[y][x] = room
+                previous_room.connect_rooms(room, room_direction)
+                previous_room = room
+            elif dir == 4 and room.w_to is None and !self.grid[y][x-1]:
+                room_count += 1
+                room_direction = "w"
+                x -= 1
+                room = Room(room_count, "A Generic Room", "This is a generic room.", x, y)
+                self.grid[y][x] = room
+                previous_room.connect_rooms(room, room_direction)
+                previous_room = room
 
-            # Update iteration variables
-            previous_room = room
-            room_count += 1
+        # # Start from lower-left corner (0,0)
+        # x = -1 # (this will become 0 on the first step)
+        # y = 0
+        # room_count = 0
+
+        # # Start generating rooms to the east
+        # direction = 1  # 1: east, -1: west
+
+
+        # # While there are rooms to be created...
+        # previous_room = None
+        # while room_count < num_rooms:
+
+        #     # Calculate the direction of the room to be created
+        #     if direction > 0 and x < size_x - 1:
+        #         room_direction = "e"
+        #         x += 1
+        #     elif direction < 0 and x > 0:
+        #         room_direction = "w"
+        #         x -= 1
+        #     else:
+        #         # If we hit a wall, turn north and reverse direction
+        #         room_direction = "n"
+        #         y += 1
+        #         direction *= -1
+
+        #     # Create a room in the given direction
+        #     room = Room(room_count, "A Generic Room", "This is a generic room.", x, y)
+        #     # Note that in Django, you'll need to save the room after you create it
+
+        #     # Save the room in the World grid
+        #     self.grid[y][x] = room
+
+        #     # Connect the new room to the previous room
+        #     if previous_room is not None:
+        #         previous_room.connect_rooms(room, room_direction)
+
+        #     # Update iteration variables
+        #     previous_room = room
+        #     room_count += 1
 
 
 
