@@ -13,6 +13,12 @@ import json
 # instantiate pusher
 # pusher = Pusher(app_id=config('PUSHER_APP_ID'), key=config('PUSHER_KEY'), secret=config('PUSHER_SECRET'), cluster=config('PUSHER_CLUSTER'))
 
+# These functions are referenced in adventure/urls.py as REST API calls
+@csrf_exempt
+@api_view(["GET"])
+def rooms(request):
+    return JsonResponse({"rooms": list(Room.objects.values().order_by('id'))})
+
 
 @csrf_exempt
 @api_view(["GET"])
