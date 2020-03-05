@@ -14,7 +14,7 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('api/', include(router.urls)),
     path('api/adv/', include('adventure.urls')),
-    # path("api-token-auth/", views.obtain_auth_token)
+    path("api-token-auth/", views.obtain_auth_token)
 ]
 
 # now have an endpoint of localhost:8000/api/rooms
