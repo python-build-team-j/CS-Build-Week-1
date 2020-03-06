@@ -3,11 +3,11 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
-import uuid
+# import uuid
 
 
 class Room(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)  # uuid4 generates random id
+    # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)  # uuid4 generates random id
     title = models.CharField(max_length=50, default="DEFAULT TITLE")
     description = models.CharField(
         max_length=500, default="DEFAULT DESCRIPTION")
