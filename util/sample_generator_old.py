@@ -5,11 +5,6 @@
 # procedural generation algorithm and use print_rooms()
 # to see the world.
 
-from random import seed
-from random import randint
-
-seed(1)
-
 
 class Room:
     def __init__(self, id, name, description, x, y):
@@ -55,64 +50,12 @@ class World:
         Fill up the grid, bottom to top, in a zig-zag pattern
         '''
 
-       # Initialize the grid
+        # Initialize the grid
         self.grid = [None] * size_y
         self.width = size_x
         self.height = size_y
         for i in range(len(self.grid)):
             self.grid[i] = [None] * size_x
-
-        # OUR ROOM GENERATOR
-        x = size_x // 2
-        y = size_y // 2
-
-        room_count = 1
-        room = Room(room_count, "A Generic Room",
-                    "This is a generic room.", x, y)
-        previous_room = room
-
-        while room_count <= num_rooms:
-            dir = randint(1, 4)
-
-            print(f'{x}, {y}')
-
-    # check to see if room is previously created
-            if dir == 1 and room.n_to is None and not self.grid[y+1][x]:
-                room_count += 1
-                room_direction = "n"
-                y += 1
-                room = Room(room_count, "A Generic Room",
-                            "This is a generic room.", x, y)
-                self.grid[y][x] = room
-                previous_room.connect_rooms(room, room_direction)
-                previous_room = room
-            elif dir == 2 and room.e_to is None and not self.grid[y][x+1]:
-                room_count += 1
-                room_direction = "e"
-                x += 1
-                room = Room(room_count, "A Generic Room",
-                            "This is a generic room.", x, y)
-                self.grid[y][x] = room
-                previous_room.connect_rooms(room, room_direction)
-                previous_room = room
-            elif dir == 3 and room.s_to is None and not self.grid[y-1][x]:
-                room_count += 1
-                room_direction = "s"
-                y -= 1
-                room = Room(room_count, "A Generic Room",
-                            "This is a generic room.", x, y)
-                self.grid[y][x] = room
-                previous_room.connect_rooms(room, room_direction)
-                previous_room = room
-            elif dir == 4 and room.w_to is None and not self.grid[y][x-1]:
-                room_count += 1
-                room_direction = "w"
-                x -= 1
-                room = Room(room_count, "A Generic Room",
-                            "This is a generic room.", x, y)
-                self.grid[y][x] = room
-                previous_room.connect_rooms(room, room_direction)
-                previous_room = room
 
         # Start from lower-left corner (0,0)
         x = -1  # (this will become 0 on the first step)
@@ -211,9 +154,9 @@ class World:
 
 
 w = World()
-num_rooms = 100
-width = 20  # size_x
-height = 20  # size_y
+num_rooms = 44
+width = 8
+height = 7
 w.generate_rooms(width, height, num_rooms)
 w.print_rooms()
 
