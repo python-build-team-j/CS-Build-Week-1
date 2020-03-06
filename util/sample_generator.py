@@ -70,49 +70,65 @@ class World:
         room = Room(room_count, "A Generic Room",
                     "This is a generic room.", x, y)
         previous_room = room
+        fall_back_room = room
+
+        fail_counter = 0
 
         while room_count <= num_rooms:
             dir = randint(1, 4)
 
-            print(f'{x}, {y}')
+            print(f'{x},{y}')
 
-    # check to see if room is previously created
-            if dir == 1 and room.n_to is None and not self.grid[y+1][x]:
-                room_count += 1
-                room_direction = "n"
-                y += 1
-                room = Room(room_count, "A Generic Room",
-                            "This is a generic room.", x, y)
-                self.grid[y][x] = room
-                previous_room.connect_rooms(room, room_direction)
-                previous_room = room
-            elif dir == 2 and room.e_to is None and not self.grid[y][x+1]:
-                room_count += 1
-                room_direction = "e"
-                x += 1
-                room = Room(room_count, "A Generic Room",
-                            "This is a generic room.", x, y)
-                self.grid[y][x] = room
-                previous_room.connect_rooms(room, room_direction)
-                previous_room = room
-            elif dir == 3 and room.s_to is None and not self.grid[y-1][x]:
-                room_count += 1
-                room_direction = "s"
-                y -= 1
-                room = Room(room_count, "A Generic Room",
-                            "This is a generic room.", x, y)
-                self.grid[y][x] = room
-                previous_room.connect_rooms(room, room_direction)
-                previous_room = room
-            elif dir == 4 and room.w_to is None and not self.grid[y][x-1]:
-                room_count += 1
-                room_direction = "w"
-                x -= 1
-                room = Room(room_count, "A Generic Room",
-                            "This is a generic room.", x, y)
-                self.grid[y][x] = room
-                previous_room.connect_rooms(room, room_direction)
-                previous_room = room
+            if dir == 1 and room.n_to is None and y+1 < size_y:
+                if self.grid[y+1][x] is None:
+                    room_count += 1
+                    room_direction = "n"
+                    y += 1
+                    room = Room(room_count, "A Generic Room",
+                                "This is a generic room.", x, y)
+                    self.grid[y][x] = room
+                    previous_room.connect_rooms(room, room_direction)
+                    previous_room = room
+                    fail_counter = 0
+            elif dir == 2 and room.e_to is None and x+1 < size_x:
+                if self.grid[y][x+1] is None:
+                    room_count += 1
+                    room_direction = "e"
+                    x += 1
+                    room = Room(room_count, "A Generic Room",
+                                "This is a generic room.", x, y)
+                    self.grid[y][x] = room
+                    previous_room.connect_rooms(room, room_direction)
+                    previous_room = room
+                    fail_counter = 0
+            elif dir == 3 and room.s_to is None and 0 <= y-1:
+                if self.grid[y-1][x] is None:
+                    room_count += 1
+                    room_direction = "s"
+                    y -= 1
+                    room = Room(room_count, "A Generic Room",
+                                "This is a generic room.", x, y)
+                    self.grid[y][x] = room
+                    previous_room.connect_rooms(room, room_direction)
+                    previous_room = room
+                    fail_counter = 0
+            elif dir == 4 and room.w_to is None and 0 <= x-1:
+                if self.grid[y][x-1] is None:
+                    room_count += 1
+                    room_direction = "w"
+                    x -= 1
+                    room = Room(room_count, "A Generic Room",
+                                "This is a generic room.", x, y)
+                    self.grid[y][x] = room
+                    previous_room.connect_rooms(room, room_direction)
+                    previous_room = room
+                    fail_counter = 0
+            else:
+                fail_counter += 1
+                if fail_counter > 10:
+                    previous_room = fall_back_room
+                    x = previous_room.x
+                    y = previous_room.y
 
         # Start from lower-left corner (0,0)
         x = -1  # (this will become 0 on the first step)
