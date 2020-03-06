@@ -74,7 +74,6 @@ class World:
         while room_count < num_rooms:
             dir = randint(1, 4)
 
- 
             if dir == 1 and room.n_to is None and !self.grid[y+1][x]:
                 room_count += 1
                 room_direction = "n"
