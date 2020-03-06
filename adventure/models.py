@@ -4,11 +4,11 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 import uuid
-# from uuid import uuid4
+from uuid import uuid4
 
 
 class Room(models.Model):
-    # id = models.UUIDField(primary_key=True, default=uuid4, editable=False)  # uuid4 generates random id
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)  # uuid4 generates random id
     title = models.CharField(max_length=50, default="DEFAULT TITLE")
     description = models.CharField(
         max_length=500, default="DEFAULT DESCRIPTION")
@@ -16,6 +16,8 @@ class Room(models.Model):
     s_to = models.IntegerField(default=0)
     e_to = models.IntegerField(default=0)
     w_to = models.IntegerField(default=0)
+    x = models.IntegerField(default=0)
+    y = models.IntegerField(default=0)
 
     def connectRooms(self, destinationRoom, direction):
         destinationRoomID = destinationRoom.id
